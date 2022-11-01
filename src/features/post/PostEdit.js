@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab'
 import { alpha, Box, Button, Card, Stack,  } from '@mui/material'
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormProvider, FTextField } from '../../components/form'
@@ -23,7 +23,7 @@ const defaultValues = {
 function PostEdit(props) {
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)=> state.post)
-    const [editInput, setEditInput] = useState(props.post.content)
+    const editInput = props.post.content
     console.log(props)
 
     const fileInput = useRef()

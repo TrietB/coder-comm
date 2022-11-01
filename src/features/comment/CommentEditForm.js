@@ -46,15 +46,15 @@ function CommentEditForm({commentId, closeEdit}) {
             },
           }}
         />
-        <Box display='flex' justifyContent= 'space-evenly'>
+        <Box display='flex' justifyContent='space-between' sx={{mt:1}}>
         <Button
           type='submit'
           variant='contained'
           size='small'
-        >
+          >
           Edit
         </Button>
-        <Button 
+        <Button sx={{ml:2}}
           variant='contained'
           color='error'
           size='small'
