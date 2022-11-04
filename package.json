@@ -18,6 +18,7 @@
     "date-fns": "^2.29.3",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
+    "material-ui-confirm": "^3.0.7",
     "numeral": "^2.0.6",
     "react": "^18.2.0",
     "react-confirm-alert": "^3.0.6",

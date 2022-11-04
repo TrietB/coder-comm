@@ -1,12 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab'
 import { alpha, Box, Button, Card, Stack,  } from '@mui/material'
-import React, { useRef } from 'react'
+import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormProvider, FTextField } from '../../components/form'
+import { FormProvider, FTextField, FUploadImage } from '../../components/form'
 import * as Yup from 'yup'
 import { editPost } from './postSlice';
+import { useConfirm } from 'material-ui-confirm';
 
 
 
@@ -24,16 +25,10 @@ function PostEdit(props) {
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)=> state.post)
     const editInput = props.post.content
+    const confirm = useConfirm()
     console.log(props)
 
-    const fileInput = useRef()
 
-    const handleFile = (e) => {
-        const file = fileInput.current.files[0]
-        if(file){
-            setValue('image', file)
-        }
-    }
 
     const methods = useForm({
         resolver: yupResolver(yupSchema),
@@ -41,13 +36,37 @@ function PostEdit(props) {
     })
 
     const {handleSubmit, reset, setValue, formState: {isSubmitting}} = methods
+    const handleDrop = useCallback(
+        (acceptedFiles) => {
+          const file = acceptedFiles[0];
+    
+          if (file) {
+            setValue(
+              "image",
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            );
+          }
+        },
+        [setValue]
+      );
 
     const onSubmit = (data) => {
-      if (window.confirm('Are you sure you wish to edit')){
-          console.log(data, props.postId)
-          dispatch(editPost(data, props.postId)).then(()=> reset())
-          props.handleClose()
-        }
+    //   if (window.confirm('Are you sure you wish to edit')){
+    //       console.log(data, props.postId)
+    //       dispatch(editPost(data, props.postId)).then(()=> reset())
+    //       props.handleClose()
+    //     }
+        confirm({ description: "Edit this post?" })
+      .then(() => {
+        dispatch(editPost(data, props.postId)).then(()=> reset())
+        props.handleClose()
+      })
+      .catch(() => {
+        /* ... */
+        console.log('Cancel')
+      });
     }
   return (
     <Card sx={{p: 3}}>
@@ -68,7 +87,12 @@ function PostEdit(props) {
                 }
             }}
             />
-            <input type='file' ref={fileInput} onChange={handleFile}/>
+            <FUploadImage
+            name="image"
+            accept="image/*"
+            maxSize={3145728}
+            onDrop={handleDrop}
+          />
             <Box
             sx={{
                 display: 'flex',

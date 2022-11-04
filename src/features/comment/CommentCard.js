@@ -8,6 +8,7 @@ import CommentEditForm from './CommentEditForm';
 import { deleteComment, startEditing, stopEditing } from './commentSlice';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useConfirm } from 'material-ui-confirm';
 
 
 const ITEM_HEIGHT = 48
@@ -15,6 +16,7 @@ const ITEM_HEIGHT = 48
 function CommentCard({comment, postId}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [edit, setEdit] = useState(true)
+  const confirm = useConfirm()
   const open = Boolean(anchorEl)
   const dispatch = useDispatch()
   // const handleOpen = () => {
@@ -32,7 +34,14 @@ function CommentCard({comment, postId}) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteComment(comment._id, postId))
+    confirm({ description: "Are you sure to delete this comment?" })
+      .then(() => {
+        /* ... */
+        dispatch(deleteComment(comment._id, postId))
+      })
+      .catch(() => {
+        /* ... */
+      });
   }
   const handleEdit = () => {
     dispatch(startEditing)
@@ -96,7 +105,7 @@ function CommentCard({comment, postId}) {
           }}
     >
             <MenuItem key='delete'  
-            onClick={()=> {window.confirm('Are your sure to delete?') && handleDelete()}}
+            onClick={handleDelete}
             divider
             >
             <ListItemIcon>

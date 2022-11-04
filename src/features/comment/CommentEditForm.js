@@ -1,4 +1,5 @@
 import {  Box, Button,  Stack, TextField } from '@mui/material'
+import { useConfirm } from 'material-ui-confirm';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import {  editComment, } from './commentSlice';
@@ -8,20 +9,20 @@ import {  editComment, } from './commentSlice';
 function CommentEditForm({commentId, closeEdit}) {
     const [content, setContent] = useState('')
     const dispatch = useDispatch()
+    const confirm = useConfirm()
     const handleSubmit = (e) => {
-      if (window.confirm('Are you sure you wish to edit')){
-
         e.preventDefault()
+      confirm({ description: "Edit this comment?" })
+      .then((e) => {
+        // e.preventDefault()
         dispatch(editComment({commentId, content}))
-        // dispatch(getComments({postId, content}))
-        console.log(commentId)
         setContent('')
         closeEdit()
-      }
-      else{
-        e.preventDefault()
+      })
+      .catch(() => {
+        // e.preventDefault()
 
-      }
+      });
     }
     
   return (

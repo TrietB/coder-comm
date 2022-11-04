@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import {FormProvider, FTextField} from '../../components/form'
+import React, { useCallback, useRef } from 'react'
+import {FormProvider, FTextField, FUploadImage} from '../../components/form'
 import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -20,22 +20,31 @@ const defaultValues = {
 function PostForm() {
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)=> state.post)
-
+    
     const fileInput = useRef()
-
-    const handleFile = (e) => {
-        const file = fileInput.current.files[0]
-        if(file){
-            setValue('image', file)
-        }
-    }
-
     const methods = useForm({
         resolver: yupResolver(yupSchema),
         defaultValues,
     })
-
     const {handleSubmit, reset, setValue, formState: {isSubmitting}} = methods
+
+    const handleDrop = useCallback(
+        (acceptedFiles) => {
+          const file = acceptedFiles[0];
+    
+          if (file) {
+            setValue(
+              "image",
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            );
+          }
+        },
+        [setValue]
+      );
+
+
 
     const onSubmit = (data) => {
        dispatch(createPost(data)).then(()=> reset())
@@ -57,7 +66,13 @@ function PostForm() {
                         }
                     }}
                     />
-                    <input type='file' ref={fileInput} onChange={handleFile}/>
+                    <FUploadImage
+                        name="image"
+                        accept="image/*"
+                        maxSize={3145728}
+                        onDrop={handleDrop}
+                    />
+
                     <Box
                     sx={{
                         display: 'flex',

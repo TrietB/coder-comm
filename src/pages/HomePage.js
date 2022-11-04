@@ -59,14 +59,14 @@ function HomePage() {
       component: <FriendRequests/>
     },
     { 
-      value: 'add_friend',
-      icon: <PersonAddRounded sx={{fontSize: 24}}/>,
-      component: <AddFriend />
-    },
-    { 
       value: 'sent_request',
       icon: <CoPresentIcon sx={{fontSize: 24}}/>,
       component: <SentRequest/>
+    },
+    { 
+      value: 'add_friend',
+      icon: <PersonAddRounded sx={{fontSize: 24}}/>,
+      component: <AddFriend />
     },
 
   ]

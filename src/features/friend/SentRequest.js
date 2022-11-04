@@ -25,7 +25,7 @@ function SentRequest() {
   return (
     <Container>
       <Typography variant="h4" sx={{ mb: 3 }}>
-        Friend Requests
+        Sent Requests
       </Typography>
       <Card sx={{ p: 3 }}>
         <Stack spacing={2}>

@@ -18,16 +18,18 @@ import CommentForm from '../comment/CommentForm';
 import PostReaction from './PostReaction';
 import { fDate } from '../../utils/formatTime';
 import { useDispatch } from 'react-redux';
-import { deletePost, getPosts, startEditing } from './postSlice';
+import { deletePost, startEditing } from './postSlice';
 import PostEdit from './PostEdit';
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
+import { useConfirm } from 'material-ui-confirm';
 
 const ITEM_HEIGHT = 48
 
 function PostCard({post, postId}) {
   const [isEditing, setIsEditing] = useState(true)
   const dispatch = useDispatch()
-  const {user} = useAuth()
+  // const {user} = useAuth()
+  const confirm = useConfirm()
   // const [id , setId] = useState(editedId)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -41,11 +43,20 @@ function PostCard({post, postId}) {
   };
 
   const handleDelete = () => {
-    if (window.confirm('Are you sure you wish to edit')){
+    // if (window.confirm('Are you sure you wish to edit')){
+    //   dispatch(deletePost({postId}))
+    //   dispatch(getPosts(user._id, 1))
+    //   setAnchorEl(null)
+    // }
+    confirm({ description: "Are you sure to delete this post?" })
+    .then(() => {
       dispatch(deletePost({postId}))
-      dispatch(getPosts(user._id, 1))
+      // dispatch(getPosts(user._id, 1))
       setAnchorEl(null)
-    }
+    })
+    .catch(() => {
+      console.log('cancel')
+    });
   }
 
   const handleEdit = () => {
