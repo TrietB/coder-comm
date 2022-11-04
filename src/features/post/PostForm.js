@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback } from 'react'
 import {FormProvider, FTextField, FUploadImage} from '../../components/form'
 import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -21,7 +21,7 @@ function PostForm() {
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)=> state.post)
     
-    const fileInput = useRef()
+    
     const methods = useForm({
         resolver: yupResolver(yupSchema),
         defaultValues,
