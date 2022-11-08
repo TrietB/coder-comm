@@ -28,6 +28,7 @@ const slice = createSlice({
             state.isLoading = false
             state.error = null
             console.log(action)
+            toast.success('Created new comment')
         },
         getCommentSuccess(state, action) {
             state.isLoading = false
@@ -55,7 +56,8 @@ const slice = createSlice({
             const {_id} = action.payload
             state.isLoading = false
             state.error = null
-             delete state.commentsByPosts[_id] 
+             delete state.commentsByPosts[_id]
+             toast.success('Comment removed')
         },
         isEditing(state, action) {
             state.isEditing = true
@@ -71,6 +73,8 @@ const slice = createSlice({
             console.log( state.commentsByPosts)
             
             state.commentsById[editedComment._id].content = editedComment.content
+            toast.success('Comment edited')
+
         },
         stopEditing(state) {
             state.isEditing = false
@@ -97,6 +101,8 @@ export const deleteComment = (comment, postId) => async (dispatch) => {
 
     } catch (error) {
         dispatch(slice.actions.hasError(error.message))
+        toast.error(error.message);
+
     }
 }
 
@@ -111,6 +117,8 @@ export const createComment = ({postId, content}) => async (dispatch) => {
         dispatch(getComments({postId}))
     } catch (error) {
         dispatch(slice.actions.hasError(error.message))
+        toast.error(error.message);
+
     }
 }
 export const editComment = ({commentId, postId, content}) => async (dispatch) => {
@@ -123,6 +131,8 @@ export const editComment = ({commentId, postId, content}) => async (dispatch) =>
         // dispatch(getComments({postId}))
     } catch (error) {
         dispatch(slice.actions.hasError(error.message))
+        toast.error(error.message);
+
     }
 }
 
@@ -140,6 +150,7 @@ try {
     dispatch(slice.actions.getCommentSuccess({...response.data, page, postId}))
 } catch (error) {
     dispatch(slice.actions.hasError(error.message))
+    toast.error(error.message);
     
 }
 }

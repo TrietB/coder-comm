@@ -105,5 +105,6 @@ export const getCurrentUserProfile = () => async (dispatch) => {
     dispatch(slice.actions.updateUserProfileSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error));
+
   }
 };

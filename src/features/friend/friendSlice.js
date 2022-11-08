@@ -85,6 +85,8 @@ const slice = createSlice({
       state.error = null;
       const { targetUserId, ...friendship } = action.payload;
       state.usersById[targetUserId].friendship = friendship;
+   
+
     },
 
     cancelRequestSuccess(state, action) {
@@ -92,6 +94,8 @@ const slice = createSlice({
       state.error = null;
       const { targetUserId } = action.payload;
       state.usersById[targetUserId].friendship = null;
+     
+
     },
 
     removeFriendSuccess(state, action) {
@@ -99,6 +103,8 @@ const slice = createSlice({
       state.error = null;
       const { targetUserId } = action.payload;
       state.usersById[targetUserId].friendship = null;
+
+
     },
   },
 });

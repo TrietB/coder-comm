@@ -37,6 +37,7 @@ const slice = createSlice({
               state.currentPagePosts.pop()
           state.postsById[newPost._id] = newPost
           state.currentPagePosts.unshift(newPost._id)
+          toast.success('Created new post')
         },
         getPostSuccess(state, action) {
           state.isLoading = false
@@ -63,6 +64,7 @@ const slice = createSlice({
             if( index > -1){
               state.currentPagePosts.splice(index, 1)
             }        
+            toast.success('Post removed')
         },
         startEditing(state, action){
           state.isLoading = false
@@ -91,7 +93,7 @@ const slice = createSlice({
             state.postsById[newPost._id].content = newPost.content
             state.postsById[newPost._id].image = newPost.image
 
-
+            toast.success('Post edited')
         }
           
           
@@ -119,6 +121,8 @@ export const editPost = ({content,image}, postId) => async (dispatch) => {
   } catch (error) {
 
     dispatch(slice.actions.hasError(error.message))
+    toast.error(error.message);
+
     
   }
 }
@@ -132,9 +136,12 @@ export const createPost = ({content, image}) => async (dispatch) => {
             image: imageUrl,
         })
     
+        
         dispatch(slice.actions.createPostSuccess(response.data))
     } catch (error) {
         dispatch(slice.actions.hasError(error.message))
+        toast.error(error.message);
+
     }
 }
 
@@ -147,6 +154,8 @@ export const deletePost = ({postId}) => async (dispatch) => {
     dispatch(slice.actions.deletePostSuccess(deleteResponse.data))
   } catch (error) {
     dispatch(slice.actions.hasError(error.message))
+    toast.error(error.message);
+
   }
 }
 
@@ -163,6 +172,8 @@ export const getPosts = ({userId, page, limit = 2}) => async (dispatch) => {
         dispatch(slice.actions.getPostSuccess(response.data))
     } catch (error) {
         dispatch(slice.actions.hasError(error.message))
+        toast.error(error.message);
+
     }
 }
 
